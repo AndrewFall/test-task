@@ -106,6 +106,12 @@ class StyleGuideController extends ControllerBase {
     $element = $this->getCards();
     $build[] = $this->wrapElementWideContainer($element, 'Cards');
 
+    $element = $this->getPersonCard();
+    $build[] = $this->wrapElementWideContainer($element, 'Person card');
+
+    $element = $this->getPersonCards();
+    $build[] = $this->wrapElementWideContainer($element, 'Person cards');
+
     $element = $this->getTags();
     $build[] = $this->wrapElementWideContainer($element, 'Tags');
 
@@ -264,6 +270,47 @@ class StyleGuideController extends ControllerBase {
 
     return [
       '#theme' => 'server_theme_cards',
+      '#items' => $items,
+    ];
+  }
+
+  /**
+   * Get single Person card.
+   *
+   * @return array
+   *   Render array.
+   */
+  protected function getPersonCard (): array {
+    $image = $this->buildImage($this->getPlaceholderImage(300, 200), 'Person card');
+
+    return [
+      '#theme' => 'server_theme_person_card',
+      '#url' => Url::fromRoute('<front>'),
+      '#image' => $image,
+      '#title' => 'Jane Cooper',
+      '#description' => 'Paradigm Representative',
+      '#role' => 'admin',
+      '#email' => 'some-email@example.com',
+      '#number' => '+44 1111 222222',
+    ];
+  }
+
+  /**
+   * Get Person cards.
+   *
+   * @return array
+   *   Render array.
+   */
+  protected function getPersonCards(): array {
+    $card = $this->getPersonCard();
+
+    $items = [];
+    for ($i = 0; $i < 10; $i++) {
+      $items[] = $card;
+    }
+
+    return [
+      '#theme' => 'server_theme_person_cards',
       '#items' => $items,
     ];
   }
